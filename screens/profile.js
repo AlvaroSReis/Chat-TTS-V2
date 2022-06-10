@@ -15,16 +15,65 @@ import * as WebBrowser from 'expo-web-browser';
 //import auth from '../services/firebase.js'
 
 //WebBrowser.maybeCompleteAuthSession();
-WebBrowser.mayInitWithUrlAsync();
+//WebBrowser.mayInitWithUrlAsync();
 
-export default function Profile(Component) {
+
+export function Form() {
+  const [userData, setUserData] = useState({  
+    name: '',
+    email: ''
+  });
+
+const AuthResponse = {
+  acess_token: ''
+}
+
+  async function handleGoogleSignIn() {
+    try {
+      const CLIENT_ID = "1006450497012-sjdqf46r3f7p47vtrbq1hmda1n0o4pa9.apps.googleusercontent.com";
+      const REDIRECT_URI = "https://auth.expo.io/@rodrigogsantana/formapp";
+      const SCOPE = encodeURI("profile email");
+      const RESPONSE_TYPE = "token";
+
+      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
+
+      const { AuthResponse, params } = await AuthSession.startAsync({ authUrl });
+
+      if (type === 'success') {
+        const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
+        const user = await response.json();
+        setUserData(user);
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  return (
+    <container>
+      <Button
+        title="Entrar com Google"
+        onPress={handleGoogleSignIn}
+      />
+
+      <User user={userData} />
+    </container>
+  )
+}
+
+
+
+
+/*
+export default function Profile(Component, {navigation}) {
   const [accessToken, setAccessToken] = React.useState();
   const [userInfo, setUserInfo] = React.useState();
   const [message, setMessage] = React.useState();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
     androidClientId: "826522083669-rbghqdiv59brajgrnrp3af0ojrrf2l78.apps.googleusercontent.com",
-    expoClientId: "826522083669-na8ug9f6mmnu4k4vqi8lr44ljroctoub.apps.googleusercontent.com"
+    expoClientId: "826522083669-q67ceh0fs4go50k2p5cud091s6gv3vke.apps.googleusercontent.com"
   });
 
   React.useEffect(() => {
@@ -70,7 +119,7 @@ export default function Profile(Component) {
 }
 
 
-/*
+
 export default class Login extends Component {
   render() {
     return (
@@ -104,6 +153,9 @@ export default class Login extends Component {
 }
 
 */
+
+
+import styled from 'styled-components/native';
 
 const styles = StyleSheet.create({
   container: {

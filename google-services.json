@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "826522083669",
+    "project_id": "chat-tts--auth",
+    "storage_bucket": "chat-tts--auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:826522083669:android:634cd3c75bd7e3396b4fdc",
+        "android_client_info": {
+          "package_name": "com.chatttsv2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "826522083669-a53arh85h4io0orkqgpsds4eho7n9cu6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.chatttsv2",
+            "certificate_hash": "a9774f6a0d15f196178bf0f95ff71bb99edfc71a"
+          }
+        },
+        {
+          "client_id": "826522083669-q7id597f7fbp3qb5um1nhcb2s1sg3da3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfp_Nfd5Fl1LqD3XY8xzl4Jj1WTuQoWh8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "826522083669-na8ug9f6mmnu4k4vqi8lr44ljroctoub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,19 +10,18 @@ import {
   Button,
   useState
 } from 'react-native';
-import * as Google from 'expo-auth-session/providers/google';
-import * as WebBrowser from 'expo-web-browser';
+import googleLogin from '../components/googleLogin.js'
+import { useNavigation } from '@react-navigation/native';
 
-//import auth from '../services/firebase.js'
 
-WebBrowser.maybeCompleteAuthSession();
-/*
+
 export default function Login( Component) {
   //const [username, setUsername] = useState < String > ('');
   //const [senha, setSenha] = useState < String > ('');
-  //var dados_recebidos;
+  //var dados_recebid
   //var dados_mapeados;
   //var value;
+  const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
@@ -39,19 +38,26 @@ export default function Login( Component) {
           </View>
           <TextInput
             style={styles.input}
-            placeholder='chat'
+            placeholder='Senha'
             autoCorrect={false}
           />
           <TouchableOpacity
             //onPress={() = }
-            //onPress={() => this.props.navigation.navigate('Chat')}
+            onPress={() => navigation.navigate('Home')}
             style={styles.btn}
           >
             <Text style={styles.btnTxt}>Entrar</Text>
           </TouchableOpacity>
           <TouchableOpacity
             //onPress={() = }
-            //onPress={() => this.props.navigation.navigate('Chat')}
+            onPress={() => navigation.navigate('Cadastro')}
+            style={styles.btn}
+          >
+            <Text style={styles.btnTxt}>Cadastro</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            //onPress={() = }
+            onPress={() => navigation.navigate('Home',{ screen: 'Profile'})}
             style={styles.btn}
           >
             <Text style={styles.btnTxt}>Login com Google</Text>
@@ -61,8 +67,10 @@ export default function Login( Component) {
   
     
   }
-*/
+
   
+/*
+
   export default class Login extends Component {
     render() {
       return (
@@ -80,7 +88,7 @@ export default function Login( Component) {
           </View>
           <TextInput
             style={styles.input}
-            placeholder='chat'
+            placeholder='Senha'
             autoCorrect={false}
           />
           <TouchableOpacity
@@ -102,14 +110,14 @@ export default function Login( Component) {
             //onPress={() => this.props.navigation.navigate('Chat')}
             style={styles.btn}
           >
-            <Text style={styles.btnTxt}>Cadastro com Google</Text>
+            <Text style={styles.btnTxt} >Login com Google</Text>
           </TouchableOpacity>
         </View>
       )
     }
   }
   
- 
+ */
 
   const styles = StyleSheet.create({
     container: {

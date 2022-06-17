@@ -16,8 +16,7 @@
     "preview": {
       "distribution": "internal"
     },
-    "production": {   
-      "name": "_Prod",   
+    "production": {    
       "android": {
       "buildType": "apk"
     }}

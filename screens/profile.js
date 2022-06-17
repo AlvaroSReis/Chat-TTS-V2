@@ -14,66 +14,57 @@ import * as WebBrowser from 'expo-web-browser';
 
 //import auth from '../services/firebase.js'
 
+/*
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+*/
+
 //WebBrowser.maybeCompleteAuthSession();
 //WebBrowser.mayInitWithUrlAsync();
 
-
-export function Form() {
-  const [userData, setUserData] = useState({  
-    name: '',
-    email: ''
-  });
-
-const AuthResponse = {
-  acess_token: ''
-}
-
-  async function handleGoogleSignIn() {
-    try {
-      const CLIENT_ID = "1006450497012-sjdqf46r3f7p47vtrbq1hmda1n0o4pa9.apps.googleusercontent.com";
-      const REDIRECT_URI = "https://auth.expo.io/@rodrigogsantana/formapp";
-      const SCOPE = encodeURI("profile email");
-      const RESPONSE_TYPE = "token";
-
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPE}`;
-
-      const { AuthResponse, params } = await AuthSession.startAsync({ authUrl });
-
-      if (type === 'success') {
-        const response = await fetch(`https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=${params.access_token}`);
-        const user = await response.json();
-        setUserData(user);
-      }
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
+/*
+export default function Profile(){
 
   return (
-    <container>
-      <Button
-        title="Entrar com Google"
-        onPress={handleGoogleSignIn}
-      />
+  <View style={styles.userInfo}>
+      <Button title={'Sign in with Google'} onPress={() =>  {
+        GoogleSignin.configure({
+            androidClientId: '525544504469-7c7oovtievi6a5d9pksb9p6o4j82t2g8.apps.googleusercontent.com',
+            webClientId: '525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com',
+            offlineAccess: true,
+            scopes:['profile','email'],
 
-      <User user={userData} />
-    </container>
-  )
-}
+        });
+    
+    GoogleSignin.hasPlayServices().then((hasPlayService) => {
+            if (hasPlayService) {
+                GoogleSignin.signIn().then((userInfo) => {
+                          console.log(JSON.stringify(userInfo))
+                }).catch((e) => {
+                console.log("ERROR IS: " + JSON.stringify(e));
+                })
+            }
+    }).catch((e) => {
+        console.log("ERROR IS: " + JSON.stringify(e));
+    })
+    }} />
+  </View>
+)};
+
+*/
 
 
 
-
-/*
 export default function Profile(Component, {navigation}) {
   const [accessToken, setAccessToken] = React.useState();
   const [userInfo, setUserInfo] = React.useState();
   const [message, setMessage] = React.useState();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "826522083669-rbghqdiv59brajgrnrp3af0ojrrf2l78.apps.googleusercontent.com",
-    expoClientId: "826522083669-q67ceh0fs4go50k2p5cud091s6gv3vke.apps.googleusercontent.com"
+    androidClientId: "525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com",
+    expoClientId: "525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com"
   });
 
   React.useEffect(() => {
@@ -152,10 +143,8 @@ export default class Login extends Component {
   }
 }
 
-*/
 
 
-import styled from 'styled-components/native';
 
 const styles = StyleSheet.create({
   container: {

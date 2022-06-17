@@ -24,10 +24,16 @@ export default function Navigation(){
 
 function MainNavigatort({Component}) {
     return (
-        <Stack.Navigator>
-          <Stack.Screen name="Login"  component={Login}/>
-          <Stack.Screen name="Cadastro" component={Cadastro} />
-          <Stack.Screen name="Home" component={Home}/>
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen name="Login"  component={Login} />
+          <Stack.Screen name="Cadastro" component={Cadastro} screenOptions={{
+          headerShown: true
+        }}/>
+          <Stack.Screen name="Home" component={Home} screenOptions={{
+          headerShown: true
+        }}/>
         </Stack.Navigator>
     )
 }

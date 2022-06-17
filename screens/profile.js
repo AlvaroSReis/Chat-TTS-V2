@@ -109,7 +109,7 @@ export default function Profile(Component, {navigation}) {
   );
 }
 
-
+/*
 
 export default class Login extends Component {
   render() {
@@ -144,7 +144,7 @@ export default class Login extends Component {
 }
 
 
-
+*/
 
 const styles = StyleSheet.create({
   container: {

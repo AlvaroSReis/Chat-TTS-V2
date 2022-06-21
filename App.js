@@ -6,6 +6,11 @@ import 'react-native-screens';
 import 'react-native-gesture-handler'
 import 'react-native-safe-area-context'
 
+//Ignore deprecated warnings
+import { LogBox } from "react-native";
+LogBox.ignoreLogs(["EventEmitter.removeListener"]);
+
+//navigation
 import Navigation from './navigation/navigator.js'
 
 export default function Apps() {

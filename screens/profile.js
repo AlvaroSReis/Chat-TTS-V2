@@ -9,142 +9,87 @@ import {
   Image,
   Button
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
+import {AuthSession} from 'expo-auth-session';
 
-//import auth from '../services/firebase.js'
-
-/*
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-*/
 
 //WebBrowser.maybeCompleteAuthSession();
-//WebBrowser.mayInitWithUrlAsync();
-
-/*
-export default function Profile(){
-
-  return (
-  <View style={styles.userInfo}>
-      <Button title={'Sign in with Google'} onPress={() =>  {
-        GoogleSignin.configure({
-            androidClientId: '525544504469-7c7oovtievi6a5d9pksb9p6o4j82t2g8.apps.googleusercontent.com',
-            webClientId: '525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com',
-            offlineAccess: true,
-            scopes:['profile','email'],
-
-        });
-    
-    GoogleSignin.hasPlayServices().then((hasPlayService) => {
-            if (hasPlayService) {
-                GoogleSignin.signIn().then((userInfo) => {
-                          console.log(JSON.stringify(userInfo))
-                }).catch((e) => {
-                console.log("ERROR IS: " + JSON.stringify(e));
-                })
-            }
-    }).catch((e) => {
-        console.log("ERROR IS: " + JSON.stringify(e));
-    })
-    }} />
-  </View>
-)};
-
-*/
 
 
-
-export default function Profile(Component, {navigation}) {
+export default function Profile(Component) {
+  const navigation = useNavigation();
   const [accessToken, setAccessToken] = React.useState();
   const [userInfo, setUserInfo] = React.useState();
   const [message, setMessage] = React.useState();
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    androidClientId: "525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com",
-    expoClientId: "525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com"
+    androidClientId: "525544504469-7c7oovtievi6a5d9pksb9p6o4j82t2g8.apps.googleusercontent.com",
+    expoClientId: "525544504469-9iefml1kotrlsifshjeof4quhifu9ttq.apps.googleusercontent.com",
   });
 
   React.useEffect(() => {
-    setMessage(JSON.stringify(response));
-    if (response?.type === "success") {
-      console.log("sucess")
-      setAccessToken(response.authentication.accessToken);
+  setMessage(JSON.stringify(response));
+  if (response?.type === "success") {
+    console.log("sucess")
+    setAccessToken(response.authentication.accessToken);
+  }
+}, [response]);
+
+async function getUserData() {
+  let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  userInfoResponse.json().then(data => {
+    setUserInfo(data);
+  });
+}
+
+function showUserInfo() {
+  if (userInfo) {
+    return (
+      <View style={styles.userInfo}>
+        <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
+        <Text>Welcome {userInfo.name}</Text>
+        <Text>{userInfo.email}</Text>
+      </View>
+    );
+  }
+}
+
+return (
+  <View style={styles.container}>
+    {showUserInfo()}
+    <Button
+      title={accessToken ? "Dados do Usuário" : "Login"}
+      onPress={accessToken ? getUserData : () => { promptAsync({ showInRecents: true }) }}
+    />
+    <StatusBar style="auto" />
+  </View>
+);
+
+/*
+  // new test
+  React.useEffect(() => {
+    if (response?.type === 'success') {
+      const { authentication } = response;
     }
   }, [response]);
 
-  async function getUserData() {
-    let userInfoResponse = await fetch("https://www.googleapis.com/userinfo/v2/me", {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-
-    userInfoResponse.json().then(data => {
-      setUserInfo(data);
-    });
-  }
-
-  function showUserInfo() {
-    if (userInfo) {
-      return (
-        <View style={styles.userInfo}>
-          <Image source={{ uri: userInfo.picture }} style={styles.profilePic} />
-          <Text>Welcome {userInfo.name}</Text>
-          <Text>{userInfo.email}</Text>
-        </View>
-      );
-    }
-  }
-
   return (
-    <View style={styles.container}>
-      {showUserInfo()}
-      <Button
-        title={accessToken ? "Dados do Usuário" : "Login"}
-        onPress={accessToken ? getUserData : () => { promptAsync({ showInRecents: true}) }}
-      />
-      <StatusBar style="auto" />
-    </View>
+    <Button
+      disabled={!request}
+      title="Login"
+      onPress={() => {
+        promptAsync();
+      }}
+    />
   );
-}
-
-/*
-
-export default class Login extends Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <View>
-          <Text style={styles.label}>Usuário</Text>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder='Usuário'
-          autoCorrect={false}
-        />
-        <View>
-          <Text style={styles.label}>Destinatário</Text>
-        </View>
-        <TextInput
-          style={styles.input}
-          placeholder='chat'
-          autoCorrect={false}
-        />
-        <TouchableOpacity
-          //onPress={() = }
-          onPress={() => this.props.navigation.navigate('Chat')}
-          style={styles.btn}
-        >
-          <Text style={styles.btnTxt}>Enviar</Text>
-        </TouchableOpacity>
-      </View>
-    )
-  }
-}
-
-
 */
+}
+
 
 const styles = StyleSheet.create({
   container: {

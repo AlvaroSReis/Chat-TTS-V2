@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useRef, Component, useState, useEffect, useMemo } from 'react'
 import {
   StyleSheet,
   Text,
@@ -7,12 +7,13 @@ import {
   SafeAreaView,
   ScrollView,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native'
 
 import socket from '../services/service.js'
 
-
+/*
 export default class Chat extends Component {
   constructor (props) {
     super(props)
@@ -114,26 +115,16 @@ export default class Chat extends Component {
     )
   }
 }
+*/
 
-/*
-
-const Index = ({ username }) => {
+export default function Chat (username) {
   const [value, setValue] = useState('');
-  const [num, setNum] = useState(0);
-  const [typing, setTyping] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [socket, setSocket] = useState(null);
 
-
-  useEffect(() => {
-    let skt = io('http://192.168.15.13:3000/')
-    setSocket(skt);
-
-  }, [])
 
   useEffect(() => {
     if (socket) {
-      socket.on('msg', (data, name) => {
+      socket.on('message', (data, name) => {
         let temp = messages;
         temp.push({ msg: data, name: name })
         setMessages([...temp])
@@ -167,7 +158,7 @@ const Index = ({ username }) => {
 
 
   function handleSend() {
-    socket.emit('msg', value, username)
+    socket.emit('message', value, username)
     setValue('');
   }
 
@@ -184,13 +175,10 @@ const Index = ({ username }) => {
     <>
       <StatusBar barStyle="dark-content" />
       <SafeAreaView style={styles.container}>
-        <ScrollView
-          ref={ref => scrollView = ref}
+        <ScrollView ref={ref => scrollView = ref}
           onContentSizeChange={() => scrollView.scrollToEnd({ animated: true })}>
           {messages?.map((msg, index) => <Text style={{ padding: 10, fontSize: 24, backgroundColor: index % 2 ? '#ddd' : '#fff' }} key={msg.name} >{msg.name} diz: {msg.msg}</Text>)}
         </ScrollView>
-        {typing ? <Text style={{ color: 'grey', fontSize: 18 }}>Usuário digitando...</Text> : <View></View>}
-        <Text style={{ alignSelf: 'flex-end', paddingRight: 20}}>{num} usuários online</Text>
         <View style={styles.bottomView}>
           <TextInput
             onFocus={() => handleTyping()}
@@ -213,7 +201,7 @@ const Index = ({ username }) => {
   );
 };
 
-*/
+
 
 const styles = StyleSheet.create({
   container: {

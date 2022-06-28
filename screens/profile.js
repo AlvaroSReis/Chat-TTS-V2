@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   StatusBar,
   Image,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
-import {AuthSession} from 'expo-auth-session';
 
 
 //WebBrowser.maybeCompleteAuthSession();
@@ -63,8 +63,19 @@ return (
   <View style={styles.container}>
     {showUserInfo()}
     <Button
-      title={accessToken ? "Dados do Usuário" : "Login"}
-      onPress={accessToken ? getUserData : () => { promptAsync({ showInRecents: true }) }}
+      //title={accessToken ? "Dados do Usuário" : "Login"}
+      //onPress={accessToken ? getUserData : () => { promptAsync({ showInRecents: true }) }}
+      title= 'login'
+      onPress={() => {
+        try {
+          Alert.alert('this is an alert')
+          promptAsync({ showInRecents: true }) 
+          getUserData()
+        } catch (err) {
+          console.log(err)
+        }
+
+      }}
     />
     <StatusBar style="auto" />
   </View>

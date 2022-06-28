@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import {
   StyleSheet,
   Text,
@@ -8,19 +8,24 @@ import {
   StatusBar,
   Image,
   Button,
-  useState
+  Alert
 } from 'react-native';
-import googleLogin from '../components/googleLogin.js'
-import { useNavigation } from '@react-navigation/native';
 
+import { useNavigation } from '@react-navigation/native';
+import userhandler from '../services/userhandler.js';
+function apiGetData(username, senha) {
+  return userhandler.get(`/login/${username}&${senha}`)
+}
 
 
 export default function Login( Component) {
-  //const [username, setUsername] = useState < String > ('');
-  //const [senha, setSenha] = useState < String > ('');
-  //var dados_recebid
-  //var dados_mapeados;
-  //var value;
+
+  const [username, setUsername] = useState('');
+  const [senha, setSenha] = useState('');
+  var dados_recebidos;
+  var dados_mapeados;
+  var value;
+
   const navigation = useNavigation();
 
   return (
@@ -32,6 +37,7 @@ export default function Login( Component) {
             style={styles.input}
             placeholder='Usuário'
             autoCorrect={false}
+            onChangeText={(username => setUsername(username))}
           />
           <View>
             <Text style={styles.label}>Senha</Text>
@@ -40,10 +46,39 @@ export default function Login( Component) {
             style={styles.input}
             placeholder='Senha'
             autoCorrect={false}
+            onChangeText={(senha => setSenha(senha))}
           />
           <TouchableOpacity
-            //onPress={() = }
-            onPress={() => navigation.navigate('Home')}
+            onPress={() =>  {
+
+              dados_recebidos = apiGetData(username, senha),
+              dados_recebidos.then(function(resposta){
+                dados_mapeados = (resposta.data.map(function(){return{
+                  username, senha
+                };})
+                )
+                try {
+                  
+                  value = dados_mapeados[0].username == username && dados_mapeados[0].senha == senha;
+                }catch {
+                  value = false
+                }
+      
+                if(value == true){
+                  //localStorage.setItem('username', dados_mapeados[0].username);
+                  navigation.navigate('Home', username);
+                }else{
+                  Alert.alert('Dados invalidos')
+                }
+      
+              }).catch(function(error){
+                if(error){
+                  Alert.alert('Falha no Login')
+                  //console.log(error)
+                }
+              })
+              }}
+            //onPress={() => navigation.navigate('Home')}
             style={styles.btn}
           >
             <Text style={styles.btnTxt}>Entrar</Text>
@@ -55,13 +90,6 @@ export default function Login( Component) {
           >
             <Text style={styles.btnTxt}>Cadastro</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            //onPress={() = }
-            onPress={() => navigation.navigate('Home',{ screen: 'Profile'})}
-            style={styles.btn}
-          >
-            <Text style={styles.btnTxt}>Login com Google</Text>
-          </TouchableOpacity>
         </View>
   )
   
@@ -70,6 +98,14 @@ export default function Login( Component) {
 
   
 /*
+
+          <TouchableOpacity
+            //onPress={() = }
+            onPress={() => navigation.navigate('Home',{ screen: 'Profile'})}
+            style={styles.btn}
+          >
+            <Text style={styles.btnTxt}>Login com Google</Text>
+          </TouchableOpacity>
 
   export default class Login extends Component {
     render() {

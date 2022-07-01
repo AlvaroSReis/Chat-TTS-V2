@@ -5,6 +5,7 @@ import { StyleSheet } from 'react-native';
 import 'react-native-screens';
 import 'react-native-gesture-handler'
 import 'react-native-safe-area-context'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //Ignore deprecated warnings
 import { LogBox } from "react-native";

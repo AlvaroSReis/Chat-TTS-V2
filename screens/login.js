@@ -11,11 +11,14 @@ import {
   Alert
 } from 'react-native';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { useNavigation } from '@react-navigation/native';
 import userhandler from '../services/userhandler.js';
 function apiGetData(username, senha) {
   return userhandler.get(`/login/${username}&${senha}`)
 }
+
 
 
 export default function Login( Component) {
@@ -25,6 +28,15 @@ export default function Login( Component) {
   var dados_recebidos;
   var dados_mapeados;
   var value;
+
+  async function storeUsername() {
+    try {
+      await AsyncStorage.setItem('USERNAME', username)
+    } catch (e) {
+      console.log('error')
+      // saving error
+    }
+  }
 
   const navigation = useNavigation();
 
@@ -47,6 +59,7 @@ export default function Login( Component) {
             placeholder='Senha'
             autoCorrect={false}
             onChangeText={(senha => setSenha(senha))}
+            secureTextEntry={true}
           />
           <TouchableOpacity
             onPress={() =>  {
@@ -66,7 +79,8 @@ export default function Login( Component) {
       
                 if(value == true){
                   //localStorage.setItem('username', dados_mapeados[0].username);
-                  navigation.navigate('Home', username);
+                  storeUsername();
+                  navigation.navigate('Home');
                 }else{
                   Alert.alert('Dados invalidos')
                 }

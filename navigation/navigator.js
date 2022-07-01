@@ -8,6 +8,7 @@ import Login from '../screens/login.js'
 import Chat from '../screens/chat.js'
 import Profile from '../screens/profile.js'
 import Cadastro from '../screens/cadastro.js'
+import CadastroGoogle from '../screens/cadastroGoogle.js'
 
 
 const Stack = createStackNavigator();
@@ -26,7 +27,8 @@ function MainNavigatort({Component}) {
     return (
         <Stack.Navigator >
           <Stack.Screen name="Login"  component={Login} />
-          <Stack.Screen name="Cadastro" component={Cadastro}></Stack.Screen>
+          <Stack.Screen name="Cadastro" component={Cadastro}/>
+          <Stack.Screen name="Cadastrar com google" component ={CadastroGoogle}/>
           <Stack.Screen name="Home" component={Home}/>
         </Stack.Navigator>
     )

@@ -10,6 +10,9 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native'
+import { useNavigartion } from '@react-navigation/native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import socket from '../services/service.js'
 
@@ -117,12 +120,25 @@ export default class Chat extends Component {
 }
 */
 
-export default function Chat (username) {
+export default function Chat (component) {
   const [value, setValue] = useState('');
   const [messages, setMessages] = useState([]);
-
+  const [num, setNum] = useState(0);
+  const [username, setUsername] = useState('');
+  const getUsername = async () => {
+    try {
+      var value = await AsyncStorage.getItem('USERNAME')
+      if(value !== null) {
+        setUsername(value)
+        // value previously stored
+      }
+    } catch(e) {
+      // error reading value
+    }
+  }
 
   useEffect(() => {
+    getUsername()
     if (socket) {
       socket.on('message', (data, name) => {
         let temp = messages;
@@ -130,46 +146,27 @@ export default function Chat (username) {
         setMessages([...temp])
 
       })
-
-      socket.on('connected', data => {
-        setNum(String(data))
-      })
-
-      socket.on('disconnect', data => {
-        setNum(String(data))
-      })
-
-      socket.on('types', () => {
-        setTyping(true)
-      })
-
-      socket.on('blur', () => {
-        setTyping(false)
-      })
     }
 
 
   }, [socket])
 
   useEffect(() => {
-    console.log('messages')
-    console.log(messages)
+    //console.log('messages')
+    //console.log(messages)
   }, [messages])
 
 
   function handleSend() {
-    socket.emit('message', value, username)
-    setValue('');
+    try {
+      getUsername()
+      socket.emit('message', value, username)
+      setValue('');
+    } catch(e){
+      console.log('fail')
+      //failed
+    }
   }
-
-  function handleTyping() {
-    socket.emit('types')
-  }
-
-  function handleBlur() {
-    socket.emit('blur')
-  }
-
 
   return (
     <>
@@ -177,12 +174,10 @@ export default function Chat (username) {
       <SafeAreaView style={styles.container}>
         <ScrollView ref={ref => scrollView = ref}
           onContentSizeChange={() => scrollView.scrollToEnd({ animated: true })}>
-          {messages?.map((msg, index) => <Text style={{ padding: 10, fontSize: 24, backgroundColor: index % 2 ? '#ddd' : '#fff' }} key={msg.name} >{msg.name} diz: {msg.msg}</Text>)}
+          {messages?.map((msg, index) => <Text style={{ padding: 10, fontSize: 24, backgroundColor: index % 2 ? '#ddd' : '#fff' }} key={index} >{msg.name}: {msg.msg}</Text>)}
         </ScrollView>
         <View style={styles.bottomView}>
           <TextInput
-            onFocus={() => handleTyping()}
-            onBlur={() => handleBlur()}
             style={styles.txtInput}
             placeholder='Digite algo...'
             onChangeText={text => setValue(text)}

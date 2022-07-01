@@ -6,6 +6,7 @@ import userhandler from '../services/userhandler.js';
 import { useNavigation } from '@react-navigation/native';
 import * as Google from 'expo-auth-session/providers/google';
 import * as WebBrowser from 'expo-web-browser';
+import CadastroGoogle from './cadastroGoogle.js';
 
 
 //WebBrowser.maybeCompleteAuthSession();
@@ -128,6 +129,7 @@ export default function Cadastro(Component) {
         <Text style={styles.loginText}>Cadastrar</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.btnLogin}
+      /*
       onPress = {() => { try {
         promptAsync({ showInRecents: true}).then(
         getUserData(),
@@ -136,6 +138,8 @@ export default function Cadastro(Component) {
         console.log('error')
       }
     }}
+    */
+   onPress= {()=> navigation.navigate('Cadastrar com google')}
       >
         
 

@@ -30,6 +30,7 @@ function MainNavigatort({Component}) {
           <Stack.Screen name="Cadastro" component={Cadastro}/>
           <Stack.Screen name="Cadastrar com google" component ={CadastroGoogle}/>
           <Stack.Screen name="Home" component={Home}/>
+          <Stack.Screen name="Profile" component={Profile}/>
         </Stack.Navigator>
     )
 }

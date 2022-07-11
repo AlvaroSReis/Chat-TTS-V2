@@ -58,6 +58,13 @@ async function getUserData() {
   });
 }
 
+async function saveUserData() {
+  Promise.all(
+    AsyncStorage.setItem('USERNAME', username),
+    AsyncStorage.setItem('NAME', userInfo.name),
+    AsyncStorage.setItem('EMAIL', userInfo.email))
+}
+
 async function getUsername() {
   let usernameQuery = await userhandler.get('/username/' + userInfo.email)
     usernameQuery.json().then(data => {
@@ -74,10 +81,8 @@ async function getUsername() {
           console.log('Handling promises')
           try {
               Promise.all(getUserData().then( 
-              userhandler.get('/username/' + userInfo.email)).then(
-              AsyncStorage.setItem('USERNAME', username),
-              AsyncStorage.setItem('NAME', userInfo.name),
-              AsyncStorage.setItem('EMAIL', userInfo.email)).then(
+              getUsername()).then(
+              saveUserData() ).then(
               navigation.navigate('Home')))
           }catch(e) {
              console.log('e')
